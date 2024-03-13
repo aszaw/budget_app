@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.MutableLiveData
 
 object BudgetManager {
-    val budgetLiveData: MutableLiveData<Double> = MutableLiveData(0.0)
+    val budgetLiveData: MutableLiveData<Double> = MutableLiveData(0.00)
 }
 class MainActivity : AppCompatActivity() {
 
@@ -26,10 +26,11 @@ class MainActivity : AppCompatActivity() {
 
         val incomeButton = findViewById<Button>(R.id.button)
         val expenseButton = findViewById<Button>(R.id.button2)
+        val calendarButton = findViewById<Button>(R.id.button7)
         val editText = findViewById<TextView>(R.id.textView)
 
         BudgetManager.budgetLiveData.observe(this, { budget ->
-            editText.setText(budget.toString())
+            editText.text = String.format("%.2f", budget)
         })
 
         incomeButton.setOnClickListener {
@@ -42,6 +43,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        calendarButton.setOnClickListener {
+            val intent = Intent(this, CalendarActivity::class.java)
+            startActivity(intent)
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
