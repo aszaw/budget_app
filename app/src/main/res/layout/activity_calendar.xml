@@ -8,7 +8,7 @@
     tools:context=".CalendarActivity">
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/calendarButtonBack"
         android:layout_width="110dp"
         android:layout_height="70dp"
         android:layout_marginStart="20dp"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/calendarButtonConfirm"
         android:layout_width="110dp"
         android:layout_height="70dp"
         android:layout_marginEnd="20dp"

@@ -18,23 +18,24 @@ class IncomeActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_income)
 
-        val confirmButton = findViewById<Button>(R.id.button4)
-        val backButton = findViewById<Button>(R.id.button3)
-        val switchRecurring = findViewById<Switch>(R.id.switch1)
-        val switchEndDate = findViewById<Switch>(R.id.switch2)
-        val recurringDays = findViewById<EditText>(R.id.editTextNumber3)
-        val recurringText = findViewById<TextView>(R.id.textView2)
-        val endDateDay = findViewById<EditText>(R.id.editTextDate2)
-        val endDateText = findViewById<TextView>(R.id.textView3)
+        val confirmButton = findViewById<Button>(R.id.incomeButtonConfirm)
+        val backButton = findViewById<Button>(R.id.incomeButtonBack)
+        val switchRecurring = findViewById<Switch>(R.id.incomeRecurringSwitch)
+        val switchEndDate = findViewById<Switch>(R.id.incomeEndDateSwitch)
+        val recurringDays = findViewById<EditText>(R.id.incomeHowOftenInput)
+        val recurringText = findViewById<TextView>(R.id.incomeHowOften)
+        val endDateDay = findViewById<EditText>(R.id.incomeEndDateInput)
+        val endDateText = findViewById<TextView>(R.id.incomeEndDate)
 
-        val editText = findViewById<EditText>(R.id.editTextNumberDecimal)
+        val editText = findViewById<EditText>(R.id.incomeInputNumber)
+        editText.filters = arrayOf(MainActivity.DecimalDigitsInputFilter())
 
         confirmButton.setOnClickListener {
             val inputText = editText.text.toString()
             if (inputText.isNotEmpty()) {
                 val incomeAmount = inputText.toDouble()
-                MainActivity.budget += incomeAmount
                 BudgetManager.budgetLiveData.value = BudgetManager.budgetLiveData.value?.plus(incomeAmount)
+                MainActivity.saveBudgetToLocalStorage(this, BudgetManager.budgetLiveData.value ?: 0.0)
                 finish()
             } else {
                 Toast.makeText(this@IncomeActivity, "Please enter an income amount", Toast.LENGTH_SHORT).show()

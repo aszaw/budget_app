@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/mainButtonIncome"
         android:layout_width="120dp"
         android:layout_height="60dp"
         android:layout_marginEnd="24dp"
@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/mainButtonExpense"
         android:layout_width="120dp"
         android:layout_height="60dp"
         android:layout_marginStart="24dp"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/mainButtonCalendar"
         android:layout_width="120dp"
         android:layout_height="60dp"
         android:layout_marginBottom="16dp"

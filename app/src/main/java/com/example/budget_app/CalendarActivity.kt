@@ -14,8 +14,8 @@ class CalendarActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_calendar)
 
-        val confirmButton = findViewById<Button>(R.id.button9)
-        val backButton = findViewById<Button>(R.id.button8)
+        val confirmButton = findViewById<Button>(R.id.calendarButtonConfirm)
+        val backButton = findViewById<Button>(R.id.calendarButtonBack)
         val calendarView = findViewById<CalendarView>(R.id.calendarView)
 
         confirmButton.setOnClickListener {

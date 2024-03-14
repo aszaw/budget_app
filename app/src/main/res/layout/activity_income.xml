@@ -8,7 +8,7 @@
     tools:context=".IncomeActivity">
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/incomeButtonBack"
         android:layout_width="110dp"
         android:layout_height="70dp"
         android:layout_marginStart="20dp"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/incomeButtonConfirm"
         android:layout_width="110dp"
         android:layout_height="70dp"
         android:layout_marginEnd="20dp"
@@ -28,7 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
-        android:id="@+id/editTextNumberDecimal"
+        android:id="@+id/incomeInputNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="101dp"
@@ -43,17 +43,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/incomeRecurringSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="63dp"
         android:layout_marginTop="32dp"
         android:text="Recurring?"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumberDecimal" />
+        app:layout_constraintTop_toBottomOf="@+id/incomeInputNumber" />
 
     <EditText
-        android:id="@+id/editTextNumber3"
+        android:id="@+id/incomeHowOftenInput"
         android:layout_width="177dp"
         android:layout_height="43dp"
         android:layout_marginTop="14dp"
@@ -62,10 +62,10 @@
         android:inputType="number"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+        app:layout_constraintTop_toBottomOf="@+id/incomeRecurringSwitch" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/incomeHowOften"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="59dp"
@@ -73,20 +73,20 @@
         android:text="How often?"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+        app:layout_constraintTop_toBottomOf="@+id/incomeRecurringSwitch" />
 
     <Switch
-        android:id="@+id/switch2"
+        android:id="@+id/incomeEndDateSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="66dp"
         android:text="End Date?"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumberDecimal" />
+        app:layout_constraintTop_toBottomOf="@+id/incomeInputNumber" />
 
     <EditText
-        android:id="@+id/editTextDate2"
+        android:id="@+id/incomeEndDateInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -95,10 +95,10 @@
         android:inputType="date"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber3" />
+        app:layout_constraintTop_toBottomOf="@+id/incomeHowOftenInput" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/incomeEndDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="59dp"
@@ -106,6 +106,6 @@
         android:text="End Date"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/incomeHowOften" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
