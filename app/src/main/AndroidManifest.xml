@@ -15,15 +15,7 @@
         <activity
             android:name=".CalendarActivity"
             android:exported="false" />
-        <activity
-            android:name=".ExpenseActivity"
-            android:exported="false" />
-        <activity
-            android:name=".IncomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".income"
-            android:exported="false" />
+        <activity android:name=".TransactionActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
