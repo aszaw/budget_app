@@ -21,25 +21,52 @@ import com.google.gson.reflect.TypeToken
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-data class BudgetTransaction(val amount: Double, val spreadOutAmount: Double, val isIncome: Boolean, var date: String, val recurring: Boolean, val days: Int?, var lastChecked: String?)
+data class BudgetTransaction(
+    var amount: Double,
+    var spreadOutAmount: Double,
+    var isIncome: Boolean,
+    var date: String,
+    var recurring: Boolean,
+    var days: Int?,
+    var lastChecked: String?
+) : Serializable
 object BudgetManager {
 
     val budgetLiveData: MutableLiveData<Double> = MutableLiveData(0.00)
 
 }
-class TransactionAdapter(private var transactions: List<BudgetTransaction>) :
+class TransactionAdapter(private val context: Context, private var transactions: List<BudgetTransaction>) :
     RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder>() {
+
+        interface OnItemClickListener {
+            fun onItemClick(position: Int)
+        }
+
+    private var listener: OnItemClickListener? = null
 
     class TransactionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val amountTextView: TextView = itemView.findViewById(R.id.amountTextView)
         val dateTextView: TextView = itemView.findViewById(R.id.dateTextView)
         val recurringTextView: TextView = itemView.findViewById(R.id.recurringTextView)
+    }
+
+    fun onItemClick(position: Int) {
+        val transaction = transactions[position]
+        val intent = Intent(context, TransactionActivity::class.java)
+        intent.putExtra("transaction", transaction as Serializable)
+        context.startActivity(intent)
+    }
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
@@ -53,6 +80,9 @@ class TransactionAdapter(private var transactions: List<BudgetTransaction>) :
         holder.amountTextView.text = transaction.spreadOutAmount.toString()
         holder.dateTextView.text = transaction.date
         holder.recurringTextView.text = if (transaction.recurring) "Recurring: 1 days" else "One-time"
+        holder.itemView.setOnClickListener {
+            listener?.onItemClick(position)
+        }
     }
 
     override fun getItemCount() = transactions.size
@@ -240,7 +270,7 @@ class MainActivity : AppCompatActivity() {
                 val daysSinceLast = daysBetween(lastDate, currentDate)
 
                 if (daysSinceLast > 0 && transaction.days != 0) {
-                    val dailyAmount = transaction.amount / transaction.days
+                    val dailyAmount = transaction.amount / (transaction.days?:0)
 
                     for (i in 1..daysSinceLast) {
                         val calendar = Calendar.getInstance()

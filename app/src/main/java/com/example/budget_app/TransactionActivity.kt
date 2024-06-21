@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import java.util.Calendar
 
 class TransactionActivity : AppCompatActivity() {
+    private var transactionToEdit: BudgetTransaction? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -31,6 +32,16 @@ class TransactionActivity : AppCompatActivity() {
 
         val editText = findViewById<EditText>(R.id.transactionInputNumber)
         editText.filters = arrayOf(MainActivity.DecimalDigitsInputFilter())
+
+        transactionToEdit = intent.getSerializableExtra("transaction") as? BudgetTransaction
+        if (transactionToEdit != null) {
+            // Autopopulate the forms with the data from the transaction object
+            editText.setText(transactionToEdit?.amount.toString())
+            switchRecurring.isChecked = transactionToEdit?.recurring ?: false
+            recurringDays.setText(transactionToEdit?.days?.toString())
+            // ... populate other fields ...
+        }
+
 
         val transactionType = intent.getStringExtra("transactionType")
         if (transactionType == "transaction") {
@@ -49,27 +60,36 @@ class TransactionActivity : AppCompatActivity() {
                 val recurringDaysText = recurringDays.text.toString()
                 val recurringDaysValue = if (recurringDaysText.isNotEmpty()) recurringDaysText.toInt() else 1
                 val transaction: BudgetTransaction
-
-                when (transactionType) {
-                    "income" -> {
-                        transaction = BudgetTransaction(amount, amount/recurringDaysValue, true, currentDate, switchRecurring.isChecked, recurringDaysValue, currentDate)
-                        BudgetManager.budgetLiveData.value = BudgetManager.budgetLiveData.value?.plus(amount / recurringDaysValue)
-                    }
-
-                    "expense" -> {
-                        transaction = BudgetTransaction(amount, amount/recurringDaysValue, false, currentDate, switchRecurring.isChecked, recurringDaysValue, currentDate)
-                        BudgetManager.budgetLiveData.value = BudgetManager.budgetLiveData.value?.minus(amount / recurringDaysValue)
-                    }
-                    else -> {
-                        return@setOnClickListener
-                    }
-                }
-
-                // Load existing transactions
                 val transactions = MainActivity.loadTransactionsFromLocalStorage(this)?.toMutableList() ?: mutableListOf()
 
-                // Add the new transaction
-                transactions.add(transaction)
+                if (transactionToEdit == null) {
+                    when (transactionType) {
+                        "income" -> {
+                            transaction = BudgetTransaction(amount, amount/recurringDaysValue, true, currentDate, switchRecurring.isChecked, recurringDaysValue, currentDate)
+                            BudgetManager.budgetLiveData.value = BudgetManager.budgetLiveData.value?.plus(amount / recurringDaysValue)
+                            transactions.add(transaction)
+                        }
+
+                        "expense" -> {
+                            transaction = BudgetTransaction(amount, amount/recurringDaysValue, false, currentDate, switchRecurring.isChecked, recurringDaysValue, currentDate)
+                            BudgetManager.budgetLiveData.value = BudgetManager.budgetLiveData.value?.minus(amount / recurringDaysValue)
+                            transactions.add(transaction)
+                        }
+                        else -> {
+                            return@setOnClickListener
+                        }
+                    }
+                } else {
+                    transactions.remove(transactionToEdit!!)
+                    BudgetManager.budgetLiveData.value = BudgetManager.budgetLiveData.value?.minus(transactionToEdit!!.amount)
+                    transactionToEdit?.amount = inputText.toDouble()
+                    transactionToEdit?.spreadOutAmount = inputText.toDouble() / recurringDaysValue
+                    transactionToEdit?.recurring = switchRecurring.isChecked
+                    transactionToEdit?.days = recurringDays.text.toString().toInt()
+                    BudgetManager.budgetLiveData.value = BudgetManager.budgetLiveData.value?.plus(inputText.toDouble() / recurringDaysValue)
+                    transactions.add(transactionToEdit!!)
+                    // ... update other fields ...
+                }
 
                 // Save the updated list of transactions
                 MainActivity.saveTransactionsToLocalStorage(this, transactions)

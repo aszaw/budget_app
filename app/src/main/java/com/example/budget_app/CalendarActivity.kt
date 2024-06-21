@@ -1,5 +1,6 @@
 package com.example.budget_app
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.CalendarView
@@ -46,9 +47,17 @@ class CalendarActivity : AppCompatActivity() {
         recurringTransactions = allTransactions.filter { it.recurring == true }
         filteredTransactions = allTransactions.filter { it.date == "$year-${month + 1}-$dayOfMonth" && it.recurring == false }
         combinedTransactions = recurringTransactions + filteredTransactions
-        transactionAdapter = TransactionAdapter(combinedTransactions)
+        transactionAdapter = TransactionAdapter(this, combinedTransactions)
         recyclerView.adapter = transactionAdapter
 
+        transactionAdapter.setOnItemClickListener(object : TransactionAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val intent = Intent(this@CalendarActivity, TransactionActivity::class.java)
+                intent.putExtra("transactionType", "transaction")
+                intent.putExtra("transaction", combinedTransactions[position])
+                startActivity(intent)
+            }
+        })
 
         confirmButton.setOnClickListener {
             finish()
